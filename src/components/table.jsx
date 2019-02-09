@@ -4,7 +4,7 @@ class Table extends Component {
 
 render(){
 
-    const {movies, onDeleteMovie, onToggleLiked} = this.props;
+    const {movies, onDeleteMovie, onToggleLiked, onOrderBy} = this.props;
 
 
     let newMovies = [...movies];
@@ -14,11 +14,11 @@ render(){
         <table className="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Genre</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Liked</th>
-                    <th scope="col">Rate</th>
+                    <th scope="col" onClick={()=>onOrderBy("title")}>Title</th>
+                    <th scope="col" onClick={()=>onOrderBy("genre")}>Genre</th>
+                    <th scope="col" onClick={()=>onOrderBy("numberInStock")}>Stock</th>
+                    <th scope="col" onClick={()=>onOrderBy("onDailyRentalRate")}>Rate</th>
+                    <th scope="col" onClick={()=>onOrderBy("liked")}>Liked</th>
                     <th scope="col"></th>
                 </tr>
             </thead>

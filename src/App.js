@@ -7,6 +7,7 @@ import Table from './components/table'
 import Genres from './components/genres'
 import {paginate} from './functions/paginate';
 import Pagination from './components/pagination';
+import _ from 'lodash';
 
 class App extends Component {
 
@@ -22,11 +23,13 @@ class App extends Component {
 
     pageSize: 4,
 
+    orderBy: {criteria: "title", order: "asc"}
+
   }
 
   render() {
 
-    const {movies,genres,pageNumber,pageSize, currentGenre} = this.state;
+    const {movies,genres,pageNumber,pageSize, currentGenre, orderBy} = this.state;
 
     let moviesShown = movies
 
@@ -36,7 +39,7 @@ class App extends Component {
 
     }
 
-    console.log(moviesShown);
+    moviesShown = _.orderBy(moviesShown,[orderBy.criteria],[orderBy.order]);
 
     return (
       <div className="App">
@@ -47,7 +50,7 @@ class App extends Component {
       </div>
       <div className="col-8 mt-2">
         <p>{`There are ${moviesShown.length} in the database of ${currentGenre}`}</p>
-        <Table movies={paginate(pageNumber,pageSize,moviesShown)} onDeleteMovie={this.deleteMovie} onToggleLiked={this.toggleLiked}/>
+        <Table movies={paginate(pageNumber,pageSize,moviesShown)} onDeleteMovie={this.deleteMovie} onToggleLiked={this.toggleLiked} onOrderBy={this.orderBy}/>
         <Pagination pages={Math.ceil(moviesShown.length/pageSize)} onSwitchPage={this.switchPage}/>
       </div>
       </div>
@@ -95,6 +98,12 @@ class App extends Component {
   console.log(movies);
 
   this.setState({movies});
+
+  }
+
+  orderBy = criteria => {
+
+  this.setState({orderBy: {criteria, order:"asc"}});
 
   }
 
