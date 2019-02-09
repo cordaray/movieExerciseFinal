@@ -4,7 +4,7 @@ class Table extends Component {
 
 render(){
 
-    const {movies, onDeleteMovie, onToggleLiked, onOrderBy} = this.props;
+    const {movies, onDeleteMovie, onToggleLiked, onOrderBy, orderBy} = this.props;
 
 
     let newMovies = [...movies];
@@ -14,11 +14,11 @@ render(){
         <table className="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col" onClick={()=>onOrderBy("title")}>Title</th>
-                    <th scope="col" onClick={()=>onOrderBy("genre")}>Genre</th>
-                    <th scope="col" onClick={()=>onOrderBy("numberInStock")}>Stock</th>
-                    <th scope="col" onClick={()=>onOrderBy("onDailyRentalRate")}>Rate</th>
-                    <th scope="col" onClick={()=>onOrderBy("liked")}>Liked</th>
+                    <th scope="col" onClick={()=>onOrderBy("title")}>Title {this.orderByClass("title")}</th>
+                    <th scope="col" onClick={()=>onOrderBy("genre.name")}>Genre {this.orderByClass("genre.name")}</th>
+                    <th scope="col" onClick={()=>onOrderBy("numberInStock")}>Stock {this.orderByClass("numberInStock")}</th>
+                    <th scope="col" onClick={()=>onOrderBy("dailyRentalRate")}>Rate {this.orderByClass("dailyRentalRate")}</th>
+                    <th scope="col">Liked</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -39,9 +39,24 @@ render(){
         </table>
         </div>
     );
+        
+    }
+
+    orderByClass = cr => {
+
+        let {orderBy} = this.props;
+
+        if (orderBy.criteria === cr){
+    
+        if (orderBy.order === "asc") {return <i class="fas fa-angle-down"></i>}
+        if (orderBy.order == "desc") {return <i class="fas fa-angle-up"></i>}
+    
+        } else {
+            return null;
+        }
+    }
 
 }
 
-}
 
 export default Table;

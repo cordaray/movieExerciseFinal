@@ -50,8 +50,8 @@ class App extends Component {
       </div>
       <div className="col-8 mt-2">
         <p>{`There are ${moviesShown.length} in the database of ${currentGenre}`}</p>
-        <Table movies={paginate(pageNumber,pageSize,moviesShown)} onDeleteMovie={this.deleteMovie} onToggleLiked={this.toggleLiked} onOrderBy={this.orderBy}/>
-        <Pagination pages={Math.ceil(moviesShown.length/pageSize)} onSwitchPage={this.switchPage}/>
+        <Table movies={paginate(pageNumber,pageSize,moviesShown)} orderBy={orderBy} onDeleteMovie={this.deleteMovie} onToggleLiked={this.toggleLiked} onOrderBy={this.orderBy}/>
+        <Pagination pages={Math.ceil(moviesShown.length/pageSize)} onSwitchPage={this.switchPage} currentPage={pageNumber}/>
       </div>
       </div>
       </div>
@@ -103,7 +103,18 @@ class App extends Component {
 
   orderBy = criteria => {
 
-  this.setState({orderBy: {criteria, order:"asc"}});
+  let {orderBy} = this.state;
+
+  if (criteria === orderBy.criteria){
+
+  if(orderBy.order === "asc") {this.setState({orderBy:{criteria,order:"desc"}, pageNumber:1})}
+  if(orderBy.order === "desc") {this.setState({orderBy:{criteria,order:"asc"},pageNumber:1})}
+
+  } else {
+
+    this.setState({orderBy: {criteria, order:"asc"}, pageNumber:1});
+
+  }
 
   }
 
