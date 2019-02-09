@@ -28,6 +28,16 @@ class App extends Component {
 
     const {movies,genres,pageNumber,pageSize, currentGenre} = this.state;
 
+    let moviesShown = movies
+
+    if (currentGenre !== "All Genres"){
+
+      moviesShown = moviesShown.filter(movie => movie.genre.name === currentGenre);
+
+    }
+
+    console.log(moviesShown);
+
     return (
       <div className="App">
       <div className="container">
@@ -35,10 +45,10 @@ class App extends Component {
       <div className="col-4">
         <Genres genres={genres} onFilterMovies={this.filterMovies} currentGenre={currentGenre}/>
       </div>
-      <div className="col-8">
-        <p>{`There are ${movies.length} in the database of ${currentGenre}`}</p>
-        <Table movies={paginate(pageNumber,pageSize,movies)} onDeleteMovie={this.deleteMovie} onToggleLiked={this.toggleLiked}/>
-        <Pagination pages={Math.ceil(movies.length/pageSize)} onSwitchPage={this.switchPage}/>
+      <div className="col-8 mt-2">
+        <p>{`There are ${moviesShown.length} in the database of ${currentGenre}`}</p>
+        <Table movies={paginate(pageNumber,pageSize,moviesShown)} onDeleteMovie={this.deleteMovie} onToggleLiked={this.toggleLiked}/>
+        <Pagination pages={Math.ceil(moviesShown.length/pageSize)} onSwitchPage={this.switchPage}/>
       </div>
       </div>
       </div>
@@ -64,15 +74,7 @@ class App extends Component {
 
   filterMovies = genre => {
 
-  let movies = getMovies();
-
-  if (genre !== "All Genres"){
-
-  movies = movies.filter(movie => movie.genre.name === genre);
-
-  }
-
-  this.setState({movies, pageNumber:1, currentGenre:genre});
+  this.setState({pageNumber:1, currentGenre:genre});
 
   }
 
